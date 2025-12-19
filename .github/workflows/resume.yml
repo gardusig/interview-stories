@@ -23,11 +23,11 @@ jobs:
       - name: Compile LaTeX
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: resume.tex
+          root_file: resume/resume.tex
 
       - name: Move PDF into publishing folder
         run: |
-          mv resume.pdf publish-pages/
+          mv resume/resume.pdf publish-pages/
 
       - name: Upload to pages
         uses: actions/upload-pages-artifact@v4
