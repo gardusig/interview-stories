@@ -1,8 +1,8 @@
 import os
 import re
 
-COMPANIES_DIR = "companies"
-README_PATH = "README.md"
+COMPANIES_DIR = "stories"
+README_PATH = "stories.md"
 
 def slugify(title: str) -> str:
     title = title.lower()
@@ -37,7 +37,7 @@ for filename in sorted(os.listdir(COMPANIES_DIR)):
     for story in re.findall(r"^###\s+(.+)", content, re.MULTILINE):
         anchor = slugify(story)
         lines.append(
-            f"- [{story}](./companies/{filename}#{anchor})\n"
+            f"- [{story}](./{COMPANIES_DIR}/{filename}#{anchor})\n"
         )
 
     lines.append("\n")

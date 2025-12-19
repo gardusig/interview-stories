@@ -1,0 +1,109 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[a4paper,margin=0.5in]{geometry}
+\usepackage{enumitem}
+\usepackage{sourcesanspro}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+\pagestyle{empty}
+
+% Define title format
+\titleformat{\section}{\Large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{1.5em}{0.5em}
+
+% Set font family
+\renewcommand{\familydefault}{\sfdefault}
+
+% Reduce space between list items
+\setlist[itemize]{itemsep=0pt, topsep=0pt}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Gustavo Gardusi}} \\[1.00em]
+    {\small
+        \begin{minipage}{0.75\textwidth}
+        \href{https://github.com/gardusig}{github.com/gardusig} \hfill
+        \href{mailto:gustavo.gardusi@gmail.com}{gustavo.gardusi@gmail.com} \hfill
+        \href{https://www.linkedin.com/in/gardusig}{linkedin.com/in/gardusig}
+    \end{minipage}}
+\end{center}
+
+\section*{Work Experience}
+
+\textbf{Amazon Web Services}
+    \hfill Vancouver, BC, Canada
+    \\ Software Development Engineer II
+    \hfill \textit{05/2025 - 09/2025}
+\begin{itemize}
+    \item Expanded Amazon Connect to support Tokyo and Osaka regions, providing automated traffic redirection during outages.
+    \item Updated workflows to replicate resources to a new paired region, triggered by event-driven stack changes, with automatic propagation of DNS records. Used CDK, CloudFormation, Route 53, EventBridge, Step Functions, Aurora PostgreSQL.
+\end{itemize}
+
+\textbf{Amazon Web Services}
+    \hfill Sao Paulo, SP, Brazil 
+    \\ Software Development Engineer II
+    \hfill \textit{11/2024 - 05/2025}
+\begin{itemize}
+    \item Enhanced the internal game asset release tool with asynchronous queue consumption and front-end polling for progress.
+    \item Launched the AWS Skill Builder public profile page, displaying user progress data from game-based learning modules, with a responsive UI built in Tailwind CSS and TypeScript. Used Cognito, CloudFront, API Gateway, Lambda, SQS, DynamoDB.
+    \item Allowed users to share achievements on LinkedIn with a badge image preview through server-generated meta tags.
+\end{itemize}
+
+\textbf{Orkes}
+    \hfill Cupertino, CA, USA
+    \\ Software Engineer (remote contractor)
+    \hfill \textit{01/2022 - 06/2023}
+\begin{itemize}
+    \item Created cross-language SDKs (Python, Go, Java, C\#, JavaScript) for the Conductor workflow orchestration platform. Standardized interfaces and documentation with examples, delivered core features with automated integration tests.
+    \item Improved workflow throughput by 20\%, with a long-running thread pool per worker, to periodically poll for workflow tasks in batches, then start a thread per task, making parallel upload requests (HTTP, gRPC) of task results back to the server.
+    \item Contributed to \textbf{\href{https://github.com/Netflix/conductor/commit/a13706fc78a3dc040593fd06ae6d9bfc8a7768cf}{Netflix OSS}} by adding missing message acknowledgment requests after batch requests on the server.
+\end{itemize}
+
+\textbf{Amazon}
+    \hfill Sao Paulo, SP, Brazil 
+    \\ Software Development Engineer II
+    \hfill \textit{04/2021 - 01/2022}
+\begin{itemize}
+    \item Resized the EC2 fleet for FBA invoice services ahead of Black Friday, using the expected peak usage and the maximum requests each host could sustain on average, through load tests with API distribution matching historical usage ratios.
+    \item Extended Java microservices and the React UI to show state-specific invoice expiration dates for FBA sellers in Brazil.
+    \item Developed alarms with disk usage metrics and a runbook, with a cleanup script, reducing on-call tickets by 10\%.
+\end{itemize}
+
+\textbf{Beyond}
+    \hfill Sao Paulo, SP, Brazil 
+    \\ Software Engineer (contractor)
+    \hfill \textit{09/2019 - 04/2021}
+\begin{itemize}
+    \item Built a matching engine to reproduce stock exchange behavior with FIX and to validate strategies through backtests.
+    \item Maintained a HFT application running during trading day to send hundreds of orders per second. Used C++, WebSocket.
+    \item Implemented Java APIs and Python ETL to receive 1 GB of daily stock market data. Used API Gateway, Lambda, and S3.
+\end{itemize}
+
+\textbf{Algar (Telecom)}
+    \hfill Uberlandia, MG, Brazil 
+    \\ Software Engineer
+    \hfill \textit{10/2017 - 09/2019}
+\begin{itemize}
+    \item Built Python scripts to periodically query hundreds of routers' metadata and keep the SQL database up to date.
+    \item Introduced parallel execution of router management commands, improving operational efficiency by 80\%.
+\end{itemize}
+
+\section*{Education}
+
+\textbf{Federal University of Uberlandia} 
+    \hfill Uberlandia, MG, Brazil
+    \\Bachelor of Science in Computer Science
+    \hfill \textit{01/2014 - 01/2022}
+\begin{itemize}
+    \item Focused on algorithms and data structures; strong problem-solving foundations; completed 50\% of courses.
+\end{itemize}
+
+\section*{Awards}
+\begin{itemize}
+    \item \textbf{\href{https://icpc.global/ICPCID/SP7WIXMME8B8}{ICPC}:} 4× Latin America Regional Finalist; highest rank: 16th/1,000+ teams.
+    \item \textbf{\href{https://www.codechef.com/users/gardusig}{CodeChef}} | \textbf{\href{https://codeforces.com/profile/gardusig}{Codeforces} | \href{https://leetcode.com/u/ggardusi/}{LeetCode}:} Ranked in the top 10\% worldwide among 100,000+ users.    
+    \item \textbf{\href{https://www.facebook.com/codingcompetitions/hacker-cup}{Meta Hacker Cup}:} 3× placed in the top 2,000 worldwide (\textbf{\href{https://www.facebook.com/codingcompetitions/hacker-cup/2023/certificate/490890632182886}{2023}}, \textbf{\href{https://www.facebook.com/codingcompetitions/hacker-cup/2022/certificate/490890632182886}{2022}}, \textbf{\href{https://www.facebook.com/codingcompetitions/hacker-cup/2021/certificate/490890632182886}{2021}}); best: 467/30,000+.
+\end{itemize}
+
+\end{document}
