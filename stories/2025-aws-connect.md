@@ -1,4 +1,4 @@
-## AWS: Amazon Connect (traffic redirection)
+## AWS: Amazon Connect (Regional Traffic Redirection)
 
 ### Stabilizing a High-Risk Public SDK Release with Proactive Dependency Alignment
 

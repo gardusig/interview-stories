@@ -1,6 +1,6 @@
-# Orkes: Conductor (Workflow Orchestration Platform)
+## Orkes: Conductor (Workflow Orchestration Platform)
 
-## Unblocking Enterprise Adoption by Delivering a Go SDK from Scratch
+### Unblocking Enterprise Adoption by Delivering a Go SDK from Scratch
 
 **Context**  
 A large enterprise prospect evaluating Orkes required a **Go SDK as a hard prerequisite** to proceed with adoption. At the time, Conductor officially supported only Java and Python SDKs, making Go support a **deal-blocking gap**.
@@ -36,7 +36,7 @@ Unblock the customer evaluation within **~4 weeks** by delivering a stable Go SD
 
 ---
 
-## Scaling from One SDK to a Cross-Language SDK Ecosystem
+### Scaling from One SDK to a Cross-Language SDK Ecosystem
 
 **Context**  
 As Orkes grew, enterprise customers required SDK support across multiple languages. The platform scaled from **1 SDK to 5 (Java, Python, Go, C#, JavaScript)**, but development, testing, and releases were largely **manual, inconsistent, and error-prone**.
@@ -66,7 +66,7 @@ Take ownership of the SDK ecosystem to:
 
 ---
 
-## Improving Python SDK Throughput with Data-Driven Concurrency Decisions
+### Improving Python SDK Throughput with Data-Driven Concurrency Decisions
 
 **Context**  
 High-volume customers using the Python SDK experienced throughput limitations under load. An initial proposal focused on **multithreading with a single polling loop**, primarily optimizing I/O-bound behavior.
@@ -94,7 +94,7 @@ Maximize throughput for both **I/O- and CPU-heavy workflows** while preserving c
 
 ---
 
-## Reducing SDK Onboarding Friction Through Code-Driven Documentation
+### Reducing SDK Onboarding Friction Through Code-Driven Documentation
 
 **Context**  
 Despite functional SDKs, support tickets and customer feedback consistently pointed to **confusing onboarding and unclear usage patterns**, increasing support load and slowing adoption.

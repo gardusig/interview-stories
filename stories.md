@@ -5,7 +5,7 @@ Each story highlights ownership, technical judgment, collaboration, and impact.
 
 ## 📂 Companies
 
-### AWS: Amazon Connect (traffic redirection)
+### AWS: Amazon Connect (Regional Traffic Redirection)
 
 - [Stabilizing a High-Risk Public SDK Release with Proactive Dependency Alignment](./stories/2025-aws-connect.md#stabilizing-a-high-risk-public-sdk-release-with-proactive-dependency-alignment)
 - [Improving Multi-Region Deployment Safety for Amazon Connect](./stories/2025-aws-connect.md#improving-multi-region-deployment-safety-for-amazon-connect)
@@ -16,8 +16,12 @@ Each story highlights ownership, technical judgment, collaboration, and impact.
 - [Delivering a New Public User Profile Page as a Full-Stack Owner](./stories/2024-aws-gbl.md#delivering-a-new-public-user-profile-page-as-a-full-stack-owner)
 - [Enabling LinkedIn Sharing with Reliable Achievement Previews](./stories/2024-aws-gbl.md#enabling-linkedin-sharing-with-reliable-achievement-previews)
 
-### Unblocking Enterprise Adoption by Delivering a Go SDK from Scratch
+### Orkes: Conductor (Workflow Orchestration Platform)
 
+- [Unblocking Enterprise Adoption by Delivering a Go SDK from Scratch](./stories/2022-orkes-sdk.md#unblocking-enterprise-adoption-by-delivering-a-go-sdk-from-scratch)
+- [Scaling from One SDK to a Cross-Language SDK Ecosystem](./stories/2022-orkes-sdk.md#scaling-from-one-sdk-to-a-cross-language-sdk-ecosystem)
+- [Improving Python SDK Throughput with Data-Driven Concurrency Decisions](./stories/2022-orkes-sdk.md#improving-python-sdk-throughput-with-data-driven-concurrency-decisions)
+- [Reducing SDK Onboarding Friction Through Code-Driven Documentation](./stories/2022-orkes-sdk.md#reducing-sdk-onboarding-friction-through-code-driven-documentation)
 
 ### Amazon: Fulfillment by Amazon (FBA)
 
