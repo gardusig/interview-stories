@@ -1,4 +1,4 @@
-## AWS: Game-Based Learning & Skill Builder Platform
+## AWS: Game-Based Learning (Skill Builder)
 
 ### Unblocking Large-Scale Catalog Classification Under Cross-Team Dependencies
 

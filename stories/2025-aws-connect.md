@@ -1,4 +1,4 @@
-## AWS: SDK Reliability & Regional Resilience
+## AWS: Amazon Connect (traffic redirection)
 
 ### Stabilizing a High-Risk Public SDK Release with Proactive Dependency Alignment
 
