@@ -16,6 +16,9 @@ Each story highlights ownership, technical judgment, collaboration, and impact.
 - [Delivering a New Public User Profile Page as a Full-Stack Owner](./stories/2024-aws-gbl.md#delivering-a-new-public-user-profile-page-as-a-full-stack-owner)
 - [Enabling LinkedIn Sharing with Reliable Achievement Previews](./stories/2024-aws-gbl.md#enabling-linkedin-sharing-with-reliable-achievement-previews)
 
+### Unblocking Enterprise Adoption by Delivering a Go SDK from Scratch
+
+
 ### Amazon: Fulfillment by Amazon (FBA)
 
 - [Capacity Planning and Scaling for Black Friday Traffic](./stories/2021-amazon-fba.md#capacity-planning-and-scaling-for-black-friday-traffic)
