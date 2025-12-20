@@ -6,12 +6,9 @@ This repository is a personal knowledge base used to prepare for technical and b
 
 ## Repository Overview
 
-- `resume/`:  
-    - Source files for the resume, kept close to stories to ensure alignment between written experience and spoken narratives.
-- `scripts/`:
-    - Automation utilities used to keep documentation consistent and up to date.
-- `stories/`:
-    - Company- or domain-specific interview stories, written in a consistent format.
+- `resume/`: kept close to stories to ensure alignment between written experience and spoken narratives
+- `scripts/`: utilities used to keep documentation up to date
+- `stories/`: company interview stories, written in a consistent format
 
 ## How to Use This Repo
 
