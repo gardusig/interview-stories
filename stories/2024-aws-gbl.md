@@ -43,7 +43,7 @@ Deliver a production-ready profile page from **Figma design to deployment**, reu
 **Outcome**  
 - Delivered a new public profile experience that clearly visualized user progress across multiple courses.
 - Replaced a legacy UI with a clean, maintainable frontend, improving usability and future extensibility.
-- Expanded scope from backend-focused work to **full-stack delivery within <3 months**.
+- Expanded scope from backend-focused work to **full-stack delivery within 3 months**.
 - Provided a reusable foundation for future Skill Builder profile enhancements.
 
 ---
