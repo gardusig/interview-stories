@@ -15,11 +15,11 @@
   - [Indexes in NoSQL Databases](#indexes-in-nosql-databases)
   - [Tradeoffs in NoSQL Indexes](#tradeoffs-in-nosql-indexes)
   - [NoSQL Rule](#nosql-rule)
-- [3. Consistency \& Concurrency](#3-consistency--concurrency)
-  - [Consistency Models](#consistency-models)
+- [3. Concurrency](#3-concurrency)
   - [Race Conditions](#race-conditions)
   - [Locking Strategies](#locking-strategies)
-  - [Common Patterns](#common-patterns)
+    - [Optimistic Locking](#optimistic-locking)
+    - [Pessimistic Locking](#pessimistic-locking)
 - [4. Caching](#4-caching)
   - [What to Cache?](#what-to-cache)
   - [Where to Cache?](#where-to-cache)
@@ -40,7 +40,6 @@
   - [Signals](#signals)
   - [Correlation IDs](#correlation-ids)
   - [SLIs / SLOs](#slis--slos)
-- [9. Data Freshness \& Latency Tradeoffs](#9-data-freshness--latency-tradeoffs)
 
 ## 1. API Design
 
@@ -295,45 +294,74 @@ Changing access patterns later is expensive and often requires data migration.
 
 ---
 
-## 3. Consistency & Concurrency
-
-### Consistency Models
-
-* **Strong consistency**: reads always see latest write
-* **Eventual consistency**: replicas converge over time
-* **Read-after-write consistency**: guarantees for same client
-
----
+## 3. Concurrency
 
 ### Race Conditions
 
 * Occur when multiple writers update shared state concurrently
+* Leads to lost updates, double processing, or invalid states
 
-**Example**: Two drivers accept the same ride simultaneously.
-
----
+**Example**: Two drivers accept the same ride at the same time → both think they won.
 
 ### Locking Strategies
 
-* **Optimistic locking**
-
-  * Version field
-  * Retry on conflict
-* **Pessimistic locking**
-
-  * Lock resource before update
-  * Lower throughput
-
 ---
 
-### Common Patterns
+#### Optimistic Locking
+* Assumes conflicts are **rare**
+* No lock upfront — detect conflicts at write time
 
-* Compare-and-swap
-* Conditional updates
-* Version fields
-* Idempotency keys
+**How it works**
+* Attach a `version` / `etag` / `updated_at` field
+* Update succeeds only if the version matches
+* On conflict → retry or fail
 
----
+**Example**
+```sql
+UPDATE rides
+SET status = 'ASSIGNED', version = version + 1
+WHERE ride_id = 42 AND version = 3;
+```
+
+**Pros**
+* High throughput
+* No blocking
+* Scales well under low contention
+
+**Cons**
+* Retries under contention
+* Clients must handle failures
+
+#### Pessimistic Locking
+
+* Assumes conflicts are **common**
+* Lock resource before modifying it
+
+**How it works**
+* Acquire lock (row lock, mutex, distributed lock)
+* Perform update
+* Release lock
+
+**Example**
+```sql
+SELECT * FROM rides
+WHERE ride_id = 42
+FOR UPDATE;
+
+UPDATE rides
+SET status = 'ASSIGNED', driver_id = 7
+WHERE ride_id = 42 AND status = 'AVAILABLE';
+```
+
+**Pros**
+* Strong consistency
+* No retries needed
+
+**Cons**
+* Lower throughput
+* Risk of deadlocks
+* Harder to scale in distributed systems
+
 
 ## 4. Caching
 
@@ -476,14 +504,3 @@ Changing access patterns later is expensive and often requires data migration.
 
 * SLI: measurement (latency, error rate)
 * SLO: target (99.9% availability)
-
----
-
-## 9. Data Freshness & Latency Tradeoffs
-
-* **Real-time**: milliseconds (rides, payments)
-* **Eventually consistent**: seconds to minutes
-* **Approximate**: analytics, counters
-
-**Tradeoff**: Freshness vs cost vs complexity.
-
