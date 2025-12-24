@@ -23,23 +23,19 @@
 - [4. Caching](#4-caching)
   - [What to Cache?](#what-to-cache)
   - [Where to Cache?](#where-to-cache)
-  - [Cache Invalidation](#cache-invalidation)
-  - [Failure Modes](#failure-modes)
-  - [Caching Patterns](#caching-patterns)
-  - [Key Concepts](#key-concepts)
-- [5. Async Processing \& Messaging](#5-async-processing--messaging)
+  - [How to Cache?](#how-to-cache)
+  - [Avoid caching](#avoid-caching)
+  - [Cache Invalidation Strategies](#cache-invalidation-strategies)
+- [5. Queue \& Async Processing \& Messaging](#5-queue--async-processing--messaging)
   - [Delivery Semantics](#delivery-semantics)
-  - [Idempotent Consumers](#idempotent-consumers)
-  - [Other Concepts](#other-concepts)
-- [6. Horizontal Scaling](#6-horizontal-scaling)
-  - [Core Techniques](#core-techniques)
-  - [Bottlenecks](#bottlenecks)
-  - [Tradeoffs](#tradeoffs)
-- [7. Failure Handling \& Reliability](#7-failure-handling--reliability)
-- [8. Observability](#8-observability)
+  - [Topics (Publish–Subscribe)](#topics-publishsubscribe)
+  - [Partitioning](#partitioning)
+  - [Dead-Letter Queues (DLQ)](#dead-letter-queues-dlq)
+  - [Priority Queues](#priority-queues)
+- [6. Observability](#6-observability)
   - [Signals](#signals)
   - [Correlation IDs](#correlation-ids)
-  - [SLIs / SLOs](#slis--slos)
+- [7. Failure Handling \& Reliability](#7-failure-handling--reliability)
 
 ## 1. API Design
 
@@ -305,8 +301,6 @@ Changing access patterns later is expensive and often requires data migration.
 
 ### Locking Strategies
 
----
-
 #### Optimistic Locking
 * Assumes conflicts are **rare**
 * No lock upfront — detect conflicts at write time
@@ -362,145 +356,147 @@ WHERE ride_id = 42 AND status = 'AVAILABLE';
 * Risk of deadlocks
 * Harder to scale in distributed systems
 
-
 ## 4. Caching
 
 ### What to Cache?
 
-* Read-heavy data
-* Expensive computations
-* Slowly changing data
-
----
+* **Read-heavy data**: Profiles, metadata, configuration
+* **Expensive computations**: Aggregations, ranking, recommendations
+* **Slowly changing data**: Feature flags, pricing rules, reference data
 
 ### Where to Cache?
 
-* Client-side (browser, mobile)
-* CDN
-* Application cache (Redis)
-* Database cache
+* **Client-side**: Browser cache, mobile local storage
+* **CDN**: Static assets, public APIs
+* **Application cache**: Redis, Memcached
+
+### How to Cache?
+* App checks cache first
+* On miss → fetch from DB → populate cache
+
+### Avoid caching
+* Highly volatile data
+* Strongly consistent transactions
+* Large unbounded result sets
 
 ---
 
-### Cache Invalidation
+### Cache Invalidation Strategies
 
-* TTL-based expiration
-* Write-through invalidation
-* Event-based invalidation
+* **TTL-based expiration**
+  * Simple, eventually consistent
+  * Risk of stale reads
 
-**Hard truth**: Cache invalidation is one of the hardest problems.
+* **Write-through invalidation**
+  * Update cache synchronously on writes
+  * Higher write latency, stronger consistency
 
----
+* **Event-based invalidation**
+  * Invalidate via pub/sub or CDC
+  * Scales well but increases complexity
 
-### Failure Modes
+**Hard truth**  
+> Cache invalidation is hard because correctness depends on timing, not logic.
 
-* Stale data
-* Cache stampede
-* Hot keys
-
----
-
-### Caching Patterns
-
-* **Cache-aside** (most common)
-* Read-through
-* Write-through
-* Write-behind
-
----
-
-### Key Concepts
-
-* TTLs
-* Cache stampede mitigation (locks, jitter)
-* Hot key sharding
-* Consistency tradeoffs
-
----
-
-## 5. Async Processing & Messaging
+## 5. Queue & Async Processing & Messaging
 
 ### Delivery Semantics
 
-* At-most-once
-* At-least-once (most common)
-* Exactly-once (rare, expensive)
+* **At-most-once**
+  * Messages may be lost
+  * No retries
+  * Used when loss is acceptable (metrics, logs)
+* **At-least-once** (most common)
+  * Messages are retried until acknowledged
+  * Duplicates possible
+  * Requires idempotent consumers
+* **Exactly-once** (rare)
+  * No loss, no duplicates
+  * Requires coordination across producer, broker, and consumer
+  * High latency and complexity
 
----
+### Topics (Publish–Subscribe)
 
-### Idempotent Consumers
+* Logical event stream supporting **fan-out**
+* Messages are written once and consumed by **multiple consumer groups**
+* Each consumer group processes all partitions independently
 
-* Consumers must handle duplicate messages safely
-* Use deduplication keys or conditional updates
+### Partitioning
 
----
+* Messages are split across **partitions** (or shards)
+* Each partition is consumed by **only one consumer at a time**
+* Enables horizontal scalability
 
-### Other Concepts
+**Tradeoffs**
+* More partitions → higher throughput
+* Fewer partitions → stronger ordering
+* Hot keys can overload a single partition
 
-* Dead-letter queues
-* Ordering guarantees
-* Partitioned consumers
+### Dead-Letter Queues (DLQ)
 
-**Rule**: Make consumers idempotent, not queues exactly-once.
+* Messages that repeatedly fail processing are moved aside
+* Prevent poison messages from blocking progress
 
----
+**Common triggers**
+* Exceeded retry limit
+* Validation errors
+* Schema incompatibility
 
-## 6. Horizontal Scaling
+### Priority Queues
 
-### Core Techniques
+* Messages processed based on importance, not arrival time
 
-* Stateless services
-* Load balancers
-* Sharding
-* Partitioning strategies
+**Implementations**
+* Separate queues/topics per priority
+* Priority field + consumer-side scheduling
 
----
+**Use cases**
+* User-facing requests over background jobs
+* SLA-sensitive workflows
 
-### Bottlenecks
+**Tradeoff**
+* Priority handling increases system complexity
+* Risk of starving low-priority messages
 
-* Databases
-* Hot partitions
-* Central coordination points
+## 6. Observability
 
----
+> “Why is the system behaving the way it is?”
 
-### Tradeoffs
+### Signals
 
-* More nodes → more coordination
-* Sharding complicates queries
-* Resharding is painful
+* **Logs**:
+  * Debugging specific failures
+  * Auditing and forensics
+* **Metrics**:
+  * Alerting
+  * Capacity planning
+  * Trend analysis
+* **Traces**:
+  * Root-cause analysis
+  * Identifying latency bottlenecks
+  * Understanding service interactions
 
----
+### Correlation IDs
+
+* Unique identifier per request
+* Propagated via headers and async messages
+
+**Why**
+* Tie logs, metrics, and traces together
+* Essential for debugging distributed systems
+
+**Best practices**
+* Generate at system entry
+* Never regenerate mid-flow
+* Include in logs automatically
 
 ## 7. Failure Handling & Reliability
 
 * Retries with exponential backoff
+  * Increase delay between retries to reduce load
 * Timeouts everywhere
+  * Never wait indefinitely for a response
 * Circuit breakers
+  * Stop sending requests to unhealthy dependencies
 * Graceful degradation
-
-**Goal**: Fail fast and fail safely.
-
----
-
-## 8. Observability
-
-### Signals
-
-* **Logs**: discrete events
-* **Metrics**: aggregated numbers
-* **Traces**: request flows
-
----
-
-### Correlation IDs
-
-* Propagate request IDs across services
-* Required for debugging distributed systems
-
----
-
-### SLIs / SLOs
-
-* SLI: measurement (latency, error rate)
-* SLO: target (99.9% availability)
+  * Reduce functionality instead of failing completely
