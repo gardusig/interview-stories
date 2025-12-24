@@ -288,8 +288,6 @@ They must be designed **before data is written**, based on known access patterns
 Model your data around queries.
 Changing access patterns later is expensive and often requires data migration.
 
----
-
 ## 3. Concurrency
 
 ### Race Conditions
