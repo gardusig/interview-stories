@@ -28,9 +28,11 @@
   - [Cache Invalidation Strategies](#cache-invalidation-strategies)
 - [5. Queue \& Async Processing \& Messaging](#5-queue--async-processing--messaging)
   - [Delivery Semantics](#delivery-semantics)
-  - [Topics (Publish–Subscribe)](#topics-publishsubscribe)
   - [Partitioning](#partitioning)
+  - [Parallel Processing via Partitioned Queues](#parallel-processing-via-partitioned-queues)
+  - [Batch Processing](#batch-processing)
   - [Dead-Letter Queues (DLQ)](#dead-letter-queues-dlq)
+  - [Topics (Publish–Subscribe)](#topics-publishsubscribe)
   - [Priority Queues](#priority-queues)
 - [6. Observability](#6-observability)
   - [Signals](#signals)
@@ -413,12 +415,6 @@ WHERE ride_id = 42 AND status = 'AVAILABLE';
   * Requires coordination across producer, broker, and consumer
   * High latency and complexity
 
-### Topics (Publish–Subscribe)
-
-* Logical event stream supporting **fan-out**
-* Messages are written once and consumed by **multiple consumer groups**
-* Each consumer group processes all partitions independently
-
 ### Partitioning
 
 * Messages are split across **partitions** (or shards)
@@ -430,6 +426,30 @@ WHERE ride_id = 42 AND status = 'AVAILABLE';
 * Fewer partitions → stronger ordering
 * Hot keys can overload a single partition
 
+### Parallel Processing via Partitioned Queues
+
+Partitioned queues enable safe parallelism without locks by guaranteeing that all messages with the same key are processed sequentially by a single consumer.
+
+> Hash a stable key (e.g. ad_id, user_id, trip_id) to determine which partition a message belongs to.
+> `partition = hash(key) % N`
+
+All events with the same key:
+- Go to the same partition
+- Are consumed in order
+
+### Batch Processing
+
+Consumers should poll messages in batches to reduce overhead.
+
+Benefits:
+- Fewer network calls
+- Fewer DB writes
+- Better CPU cache locality
+
+Tradeoff:
+- Slightly higher latency
+- Requires tuning batch size and flush interval
+
 ### Dead-Letter Queues (DLQ)
 
 * Messages that repeatedly fail processing are moved aside
@@ -439,6 +459,18 @@ WHERE ride_id = 42 AND status = 'AVAILABLE';
 * Exceeded retry limit
 * Validation errors
 * Schema incompatibility
+
+### Topics (Publish–Subscribe)
+
+* Logical event stream supporting **fan-out**
+* Messages are written once and consumed by **multiple consumer groups**
+* Each consumer group processes all partitions independently
+
+Why this matters:
+- Decouples producers from downstream logic
+- Enables independent scaling
+- Prevents cascading failures
+- Allows different SLAs per consumer
 
 ### Priority Queues
 
